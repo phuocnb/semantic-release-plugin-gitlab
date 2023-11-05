@@ -93,6 +93,7 @@ If you need to bypass the proxy for some hosts, configure the `NO_PROXY` environ
 | `failTitle`           | The title of the issue created when a release fails. Set to `false` to disable opening an issue when a release fails.                                                                                                                                                                                                      | `The automated release is failing 🚨`                                                                                                                                   |
 | `labels`              | The [labels](https://docs.gitlab.com/ee/user/project/labels.html#labels) to add to the issue created when a release fails. Set to `false` to not add any label. Labels should be comma-separated as described in the [official docs](https://docs.gitlab.com/ee/api/issues.html#new-issue), e.g. `"semantic-release,bot"`. | `semantic-release`                                                                                                                                                      |
 | `assignee`            | The [assignee](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#assignee) to add to the issue created when a release fails.                                                                                                                                                                             | -                                                                                                                                                                       |
+| `package`             | The detail information of release package to upload assets to. See [package](#package)                                                                                                                                                                                                                                     | -                                                                                                                                                                       |
 
 #### assets
 
@@ -163,6 +164,21 @@ The `failComment` `This release from branch ${branch.name} had failed due to the
 >
 > - Error message 1
 > - Error message 2
+
+#### package
+
+| Parameter | Description                                                                                                                                           | Example                                                 |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `name`    | The channel name that the assets should be uploaded to. Default is `release`.                                                                         | `v1.0.0-alpha.1` is `alpha`, `v1.0.0` is `release`, etc |
+| `version` | The package version that the assets should be uploaded to. Default is `${nextRelease.targetVersion}-${nextRelease.channel}.${nextRelease.buildNumer}` | `v1.0.0-alpha.1` is `1.0.0`, `v1.2.1` is `1.2.1`, etc   |
+
+##### package resolvable variables
+
+| Variable                  | Description                                                                                                                                                                                  | Usage                          |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| nextRelease.channel       | The actual channel name extracted from release tag. Ex: Channel name of `v1.0.0` is `release`, `v1.1.0-alpha` is `alpha`, `v1.2.0-alpha.1` is `alpha`.                                       | `${nextRelease.channel}`       |
+| nextRelease.targetVersion | The official semantic release version that the tag targets to. Ex: Target Version of `v1.0.0` is `1.0.0`, `v1.1.0-alpha` is `1.1.0`, `v1.2.0-alpha.1` is `1.2.0`.                            | `${nextRelease.targetVersion}` |
+| nextRelease.buildNumber   | The last number of the release tag which is **only available on pre-release channels**. Ex: Build Number of `v1.0.0` is `undefined`, `v1.1.0-alpha` is `undefined`, `v1.2.0-alpha.1` is `1`. | `${nextRelease.buildNumber}`   |
 
 ## Compatibility
 
